@@ -1,0 +1,15 @@
+name: "PR Cart Service"
+
+on:
+  pull_request:
+    paths:
+      - 'src/cartservice/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/docker-pr.yml
+    with:
+      project: cartservice/src

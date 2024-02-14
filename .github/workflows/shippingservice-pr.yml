@@ -1,0 +1,15 @@
+name: "PR Shipping Service"
+
+on:
+  pull_request:
+    paths:
+      - 'src/shippingservice/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/docker-pr.yml
+    with:
+      project: shippingservice
