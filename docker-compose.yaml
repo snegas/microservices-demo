@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  adservice:
+    build:
+      context: src/adservice
+  cartservice:
+    build:
+      context: src/cartservice/src
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_ADDR=rediscurrency:6379
+  rediscurrency:
+    image: redis:alpine
+  checkoutservice:
+    build:
+      context: src/checkoutservice
+      dockerfile: Dockerfile
+    environment:
+      - SHIPPING_SERVICE_ADDR=shippingservice:50051
+      - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
+      - CART_SERVICE_ADDR=cartservice:8080
+      - CURRENCY_SERVICE_ADDR=currencyservice:5555
+      - EMAIL_SERVICE_ADDR=emailservice:8080
+      - PAYMENT_SERVICE_ADDR=paymentservice:5555
+  currencyservice:
+    build:
+      context: src/currencyservice
+      dockerfile: Dockerfile
+  emailservice:
+    build:
+      context: src/emailservice
+      dockerfile: Dockerfile
+  frontend:
+    build:
+      context: src/frontend
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - SHIPPING_SERVICE_ADDR=shippingservice:50051
+      - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
+      - CART_SERVICE_ADDR=cartservice:8080
+      - CURRENCY_SERVICE_ADDR=currencyservice:5555
+      - CHECKOUT_SERVICE_ADDR=checkoutservice:5050
+      - AD_SERVICE_ADDR=adservice:9555
+      - RECOMMENDATION_SERVICE_ADDR=recommendationservice:8080
+  paymentservice:
+    build:
+      context: src/paymentservice
+      dockerfile: Dockerfile
+  productcatalogservice:
+    build:
+      context: src/productcatalogservice
+      dockerfile: Dockerfile
+  recommendationservice:
+    build:
+      context: src/recommendationservice
+      dockerfile: Dockerfile
+    environment:
+      - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
+  shippingservice:
+    build:
+      context: src/shippingservice
+      dockerfile: Dockerfile
