@@ -1,0 +1,13 @@
+name: "Main Ad Service"
+
+on:
+  push:
+    paths:
+      - 'src/adservice/**'
+      - '.github/workflows/**'
+  
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/__docker-main.yml
+    with:
+      project: adservice
