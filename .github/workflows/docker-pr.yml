@@ -37,9 +37,7 @@ jobs:
         with:
           image-ref: '${{ steps.split.outputs.imagename }}:${{ github.sha }}'
           exit-code: 1
-          format: github
-          github-pat: ${{ secrets.GITHUB_TOKEN }}
-          output: 'vulnerabilities.json'
+          output: 'vulnerabilities.table'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
       - uses: actions/github-script@v7
@@ -48,11 +46,11 @@ jobs:
           script: |
             const { readFileSync } = require('fs')
 
-            const text = readFileSync('./vulnerabilities.json');
+            const text = readFileSync('./vulnerabilities.table');
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "👋 We found the following vulnerabilities: \n\n\n```json\n" + text + "\n```"
+              body: "👋 We found the following vulnerabilities: \n\n\n```\n" + text + "\n```"
             })
