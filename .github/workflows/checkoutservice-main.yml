@@ -11,4 +11,4 @@ jobs:
   docker-workflow:
     uses: ./.github/workflows/_docker-main.yml
     with:
-      project: cartservice
+      project: checkout
