@@ -1,0 +1,14 @@
+name: "Main Cart Service"
+
+on:
+  push:
+    paths:
+      - 'src/cartservice/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/_docker-main.yml
+    with:
+      project: cartservice/src

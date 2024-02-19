@@ -1,0 +1,14 @@
+name: "Main Payment Service"
+
+on:
+  push:
+    paths:
+      - 'src/paymentservice/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/_docker-main.yml
+    with:
+      project: paymentservice

@@ -1,0 +1,14 @@
+name: "Main Currencyservice Service"
+
+on:
+  push:
+    paths:
+      - 'src/currencyservice/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/_docker-main.yml
+    with:
+      project: currencyservice

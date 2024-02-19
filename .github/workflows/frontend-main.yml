@@ -1,0 +1,14 @@
+name: "Main Frontend"
+
+on:
+  push:
+    paths:
+      - 'src/frontend/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/_docker-main.yml
+    with:
+      project: frontend

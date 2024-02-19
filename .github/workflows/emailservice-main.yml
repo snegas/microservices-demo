@@ -1,0 +1,14 @@
+name: "Main Email Service"
+
+on:
+  push:
+    paths:
+      - 'src/emailservice/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+jobs:
+  docker-workflow:
+    uses: ./.github/workflows/_docker-main.yml
+    with:
+      project: emailservice
