@@ -10,6 +10,6 @@ on:
 
 jobs:
   docker-workflow:
-    uses: ./.github/workflows/docker-pr.yml
+    uses: ./.github/workflows/__docker-pr.yml
     with:
       project: adservice

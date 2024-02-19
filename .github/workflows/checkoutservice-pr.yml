@@ -10,6 +10,6 @@ on:
 
 jobs:
   docker-workflow:
-    uses: ./.github/workflows/docker-pr.yml
+    uses: ./.github/workflows/_docker-pr.yml
     with:
       project: checkoutservice
