@@ -14,7 +14,7 @@ jobs:
       - uses: hadolint/hadolint-action@v3.1.0
         id: scan
         with:
-          dockerfile: ${{ inputs.project }}/Dockerfile
+          dockerfile: ./src/${{ inputs.project }}/Dockerfile
           failure-threshold: error
           output-file: dockerfile.table
       - name: Comment on PR
@@ -24,14 +24,16 @@ jobs:
           script: |
             const { readFileSync } = require('fs')
 
-            const text = readFileSync('./dockerfile.table');
+            const text = readFileSync('./dockerfile.table').trim();
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "👋 We found the following Dockerfile errors: \n\n\n```\n" + text + "\n```"
-            })
+            if (text.length > 0) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "👋 We found the following Dockerfile errors: \n\n\n```\n" + text + "\n```"
+              })
+            }
   docker-ci:
     runs-on: ubuntu-latest
     steps:
