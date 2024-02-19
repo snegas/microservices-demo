@@ -6,7 +6,7 @@ on:
         type: string
 
 permissions:
-  contents: write
+  issues: write
 
 jobs:
   docker-ci:
