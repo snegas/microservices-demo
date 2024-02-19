@@ -8,6 +8,6 @@ on:
   
 jobs:
   docker-workflow:
-    uses: ./.github/workflows/__docker-main.yml
+    uses: ./.github/workflows/_docker-main.yml
     with:
       project: adservice
