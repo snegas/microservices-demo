@@ -16,7 +16,7 @@ jobs:
         with:
           dockerfile: ./src/${{ inputs.project }}/Dockerfile
           failure-threshold: error
-          # output-file: dockerfile.table
+          output-file: dockerfile.table
       - name: Comment on PR
         uses: actions/github-script@v7
         if: ${{ failure() && steps.scan.conclusion == 'failure' }}
@@ -24,16 +24,14 @@ jobs:
           script: |
             const { readFileSync } = require('fs')
 
-            const text = readFileSync('./dockerfile.table').trim();
+            const text = readFileSync('./dockerfile.table');
 
-            if (text.length > 0) {
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: "👋 We found the following Dockerfile errors: \n\n\n```\n" + text + "\n```"
-              })
-            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "👋 We found the following Dockerfile errors: \n\n\n```\n" + text + "\n```"
+            })
   docker-ci:
     runs-on: ubuntu-latest
     steps:
