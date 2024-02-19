@@ -1,9 +1,9 @@
-name: "Main Ad Service"
+name: "Main Product Catalog Service"
 
 on:
   push:
     paths:
-      - 'src/adservice/**'
+      - 'src/productcatalogservice/**'
       - '.github/workflows/**'
     branches:
       - main
@@ -11,4 +11,4 @@ jobs:
   docker-workflow:
     uses: ./.github/workflows/_docker-main.yml
     with:
-      project: adservice
+      project: productcatalogservice

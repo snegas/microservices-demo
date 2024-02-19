@@ -1,9 +1,9 @@
-name: "Main Ad Service"
+name: "Main Payment Service"
 
 on:
   push:
     paths:
-      - 'src/adservice/**'
+      - 'src/paymentservice/**'
       - '.github/workflows/**'
     branches:
       - main
@@ -11,4 +11,4 @@ jobs:
   docker-workflow:
     uses: ./.github/workflows/_docker-main.yml
     with:
-      project: adservice
+      project: paymentservice
