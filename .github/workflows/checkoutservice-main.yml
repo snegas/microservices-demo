@@ -3,7 +3,7 @@ name: "Main Checkout Service"
 on:
   push:
     paths:
-      - 'src/checkout/**'
+      - 'src/checkoutservice/**'
       - '.github/workflows/**'
     branches:
       - main
@@ -11,4 +11,4 @@ jobs:
   docker-workflow:
     uses: ./.github/workflows/_docker-main.yml
     with:
-      project: checkout
+      project: checkoutservice
