@@ -3,7 +3,7 @@ name: "PR Payment Service"
 on:
   pull_request:
     paths:
-      - 'src/oaymentservice/**'
+      - 'src/paymentservice/**'
       - '.github/workflows/**'
     branches:
       - main
