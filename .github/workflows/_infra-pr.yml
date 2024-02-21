@@ -13,11 +13,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       - name: Prepare Workspace
         run: |
-          cd src/shared-infra
-          cp ../../infrastructure/ ./
-          ls -al
+          cp infrastructure/ src/shared-infra
+          ls -al src/shared-infra
       - name: Init
         run: |
+          cd src/shared-infra
           terraform init
       - name: Dev Plan
         run: |
