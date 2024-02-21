@@ -1,2 +1,2 @@
 type="shared"
-prefix="snegas-demo"
+prefix="demo"
