@@ -14,13 +14,13 @@ jobs:
       - name: Prepare Workspace
         run: |
           cp -a infrastructure/. src/shared-infra
-      - name: Init
+      - name: Dev Plan
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         run: |
           cd src/shared-infra
           terraform init
-      - name: Dev Plan
-        run: |
-          cd src/shared-infra        
           terraform workspace select -or-create dev
           terraform validate
           terraform plan
