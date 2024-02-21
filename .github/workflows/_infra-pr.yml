@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - feature/add-infrastructure-scripts
+
+jobs:
+  terraform-worflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3
+      - name: Prepare Workspace
+        run: |
+          cd src/shared-infra
+          cp ../../infrastructure/ ./
+          ls -al
+      - name: Init
+        run: |
+          terraform init
+      - name: Dev Plan
+        run: |
+          terraform workspace select -or-create dev
+          terraform validate
+          terraform plan

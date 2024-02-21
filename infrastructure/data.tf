@@ -1,0 +1,1 @@
+data "digitalocean_account" "current" {}
