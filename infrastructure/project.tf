@@ -12,7 +12,7 @@ locals {
 }
 
 resource "digitalocean_project" "environment" {
-  count       = is_shared
+  count       = local.is_shared
   name        = "${local.prefix}-env"
   description = "A project to represent ${local.env} resources."
   purpose     = "Web Application"
