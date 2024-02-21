@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    endpoints {
+    endpoints = {
       s3 = "https://nyc3.digitaloceanspaces.com"
     }
 
