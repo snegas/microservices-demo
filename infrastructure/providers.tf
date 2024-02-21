@@ -7,7 +7,10 @@ terraform {
   }
 
   backend "s3" {
-    endpoint                    = "nyc3.digitaloceanspaces.com"
+    endpoints {
+      s3 = "https://nyc3.digitaloceanspaces.com"
+    }
+
     key                         = "terraform.tfstate"
     bucket                      = "snegas-microservices-demo"
     region                      = "us-east-1"
