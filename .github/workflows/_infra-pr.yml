@@ -18,6 +18,7 @@ jobs:
       - name: Init
         run: |
           cd src/shared-infra
+          ls -al
           terraform init
       - name: Dev Plan
         run: |
