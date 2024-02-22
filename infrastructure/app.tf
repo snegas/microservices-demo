@@ -30,7 +30,7 @@ data "digitalocean_vpc" "shared" {
 }
 
 resource "digitalocean_database_cluster" "redis" {
-  count                = is_redis ? 1 : 0
+  count                = local.is_redis ? 1 : 0
   name                 = "${local.prefix}-redis"
   engine               = "redis"
   version              = "7"
