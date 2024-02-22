@@ -1,6 +1,7 @@
 name: "Shared Infra Main"
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'src/shared-infra/**'
