@@ -28,6 +28,7 @@ jobs:
           terraform init
           terraform workspace select -or-create dev
       - name: Dev Plan
+        id: plan
         working-directory: ./src/${{ inputs.project }}
         run: |
           terraform plan -no-color
