@@ -20,7 +20,7 @@ locals {
 
   current_redis_settings = local.all_redis_settings[terraform.workspace]
 
-  app_domain_name = trimprefix(element([for i in data.digitalocean_project.staging.resources : i if startswith(i, "do:domain:")], 0), "do:domain:")
+  app_domain_name = trimprefix(element([for i in data.digitalocean_project.shared[0].resources : i if startswith(i, "do:domain:")], 0), "do:domain:")
 }
 
 data "digitalocean_vpc" "shared" {
