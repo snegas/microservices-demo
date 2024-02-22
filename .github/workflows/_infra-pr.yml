@@ -30,7 +30,7 @@ jobs:
         run: |
           terraform init
           terraform workspace select -or-create ${{ inputs.env }}
-      - name: Dev Plan
+      - name: Terraform Plan
         id: plan
         working-directory: ./src/${{ inputs.project }}
         run: |
