@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'src/paymentservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 jobs:

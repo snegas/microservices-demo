@@ -4,12 +4,11 @@ on:
   pull_request:
     paths:
       - 'src/adservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 
 jobs:
   docker-workflow:
-    uses: ./.github/workflows/__docker-pr.yml
+    uses: ./.github/workflows/_docker-pr.yml
     with:
       project: adservice

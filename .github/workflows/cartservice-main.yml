@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'src/cartservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 jobs:
