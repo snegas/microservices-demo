@@ -42,7 +42,7 @@ resource "digitalocean_database_cluster" "redis" {
 
 data "digitalocean_project" "shared" {
   count = local.is_app ? 1 : 0
-  name  = terraform.workspace
+  name  = "${terraform.workspace}-shared-infra"
 }
 
 resource "digitalocean_project_resources" "app" {
