@@ -46,7 +46,7 @@ jobs:
             })
       
             // 2. Prepare format of the comment
-            const output = Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const output = `Terraform Plan 📖\`${{ steps.plan.outcome }}\`
       
             <details><summary>Show Plan</summary>
       
