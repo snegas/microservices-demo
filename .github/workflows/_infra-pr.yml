@@ -5,11 +5,6 @@ on:
         required: true
         type: string
 
-env:
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
-
 jobs:
   terraform-dev-plan:
     runs-on: ubuntu-latest
@@ -20,6 +15,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       - name: Dev Plan
         id: plan
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
         working-directory: ./src/${{ inputs.project }}
         run: |
           cp -a ../../infrastructure/. ./
