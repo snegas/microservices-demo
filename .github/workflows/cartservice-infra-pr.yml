@@ -1,0 +1,30 @@
+name: "Cart Service Infra PR"
+
+on:
+  pull_request:
+    paths:
+      - 'src/cartservice/app.auto.tfvars'
+    branches:
+      - main
+
+jobs:
+  dev-workflow:
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: cartservice
+      env: dev
+  stage-workflow:
+    needs: [dev-workflow]
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: cartservice
+      env: stage
+  prod-workflow:
+    needs: [stage-workflow]
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: cartservice
+      env: prod
