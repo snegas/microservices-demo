@@ -34,7 +34,7 @@ resource "digitalocean_domain" "default" {
 
 resource "digitalocean_project_resources" "environment" {
   count   = local.is_shared
-  project = digitalocean_project.environment.id
+  project = digitalocean_project.environment[0].id
   resources = [
     digitalocean_vpc.default[0].urn,
     digitalocean_domain.default[0].urn
