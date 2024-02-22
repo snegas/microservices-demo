@@ -25,6 +25,7 @@ data "digitalocean_vpc" "shared" {
 }
 
 
+/*
 resource "digitalocean_database_cluster" "redis" {
   count                = local.is_app
   name                 = "${local.prefix}-redis"
@@ -35,6 +36,8 @@ resource "digitalocean_database_cluster" "redis" {
   node_count           = local.current_redis_settings["node_count"]
   private_network_uuid = data.digitalocean_vpc.shared[0].id
 }
+
+
 
 data "digitalocean_project" "shared" {
   count = local.is_app
@@ -48,3 +51,4 @@ resource "digitalocean_project_resources" "app" {
     digitalocean_database_cluster.redis[0].urn
   ]
 }
+*/
