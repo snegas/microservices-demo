@@ -41,3 +41,13 @@ resource "digitalocean_database_cluster" "redis" {
   private_network_uuid = data.digitalocean_vpc.shared[0].id
   project_id           = data.digitalocean_project.shared[0].id
 }
+
+resource "digitalocean_database_firewall" "redis" {
+  count      = local.is_redis ? 1 : 0
+  cluster_id = digitalocean_database_cluster.redis[0].id
+
+  rule {
+    type  = "ip_addr"
+    value = data.digitalocean_vpc.shared[0].ip_range
+  }
+}
