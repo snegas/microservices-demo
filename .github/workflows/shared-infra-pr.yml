@@ -11,5 +11,6 @@ on:
 jobs:
   docker-workflow:
     uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
     with:
       project: shared-infra
