@@ -15,12 +15,14 @@ jobs:
       project: cartservice
       env: dev
   stage-workflow:
+    needs: [dev-workflow]
     uses: ./.github/workflows/_infra-pr.yml
     secrets: inherit
     with:
       project: cartservice
       env: stage
   prod-workflow:
+    needs: [stage-workflow]
     uses: ./.github/workflows/_infra-pr.yml
     secrets: inherit
     with:
