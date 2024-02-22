@@ -50,6 +50,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
+      - name: Download Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.env}}-tfplan
+          path: src/${{ inputs.project }}
       - name: Prepare
         working-directory: ./src/${{ inputs.project }}
         run: |
@@ -59,11 +64,6 @@ jobs:
         run: |
           terraform init
           terraform workspace select -or-create ${{ inputs.env }}
-      - name: Download Plan
-        working-directory: ./src/${{ inputs.project }}
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.env}}-tfplan
       - name: Terraform Apply
         working-directory: ./src/${{ inputs.project }}
         run: |

@@ -6,7 +6,6 @@ on:
       - 'src/shared-infra/**'
     branches:
       - main
-  workflow_call:
 
 jobs:
   dev-workflow:
