@@ -9,8 +9,21 @@ on:
       - main
 
 jobs:
-  docker-workflow:
+  dev-workflow:
     uses: ./.github/workflows/_infra-pr.yml
     secrets: inherit
     with:
       project: shared-infra
+      env: dev
+  stage-workflow:
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: shared-infra
+      env: stage
+  prod-workflow:
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: shared-infra
+      env: prod

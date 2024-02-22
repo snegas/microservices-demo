@@ -4,6 +4,9 @@ on:
       project:
         required: true
         type: string
+      env:
+        required: true
+        type: string
 
 env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -26,7 +29,7 @@ jobs:
         working-directory: ./src/${{ inputs.project }}
         run: |
           terraform init
-          terraform workspace select -or-create dev
+          terraform workspace select -or-create ${{ inputs.env }}
       - name: Dev Plan
         id: plan
         working-directory: ./src/${{ inputs.project }}
@@ -48,11 +51,11 @@ jobs:
               issue_number: context.issue.number,
             })
             const botComment = comments.find(comment => {
-              return comment.user.type === 'Bot' && comment.body.includes('Terraform Plan')
+              return comment.user.type === 'Bot' && comment.body.includes('Terraform Plan for ${{ inputs.env }}')
             })
       
             // 2. Prepare format of the comment
-            const output = `Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const output = `Terraform Plan for ${{ inputs.env }} 📖\`${{ steps.plan.outcome }}\`
       
             <details><summary>Show Plan</summary>
       
@@ -62,7 +65,7 @@ jobs:
       
             </details>
       
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Env: \`${{ inputs.env }}\`*`;
       
             // 3. If we have a comment, update it, otherwise create a new one
             if (botComment) {
@@ -80,3 +83,4 @@ jobs:
                 body: output
               })
             }
+    
