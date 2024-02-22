@@ -1,5 +1,6 @@
 locals {
-  is_app = var.type == "app" ? 1 : 0
+  is_app = var.type == "app"
+  is_redis = var.type == "app" && var.redis
 
   all_redis_settings = {
     dev = {
@@ -17,17 +18,19 @@ locals {
   }
 
   current_redis_settings = local.all_redis_settings[terraform.workspace]
+
+  app_groups = compact(concat(
+    is_redis ? [ digitalocean_database_cluster.redis[0].id ] : []
+  ))
 }
 
 data "digitalocean_vpc" "shared" {
-  count = local.is_app
-  name  = "${local.prefix}-vpc"
+  count = local.is_app ? 1 : 0
+  name  = "${terraform.workspace}-shared-infra-vpc"
 }
 
-
-/*
 resource "digitalocean_database_cluster" "redis" {
-  count                = local.is_app
+  count                = is_redis ? 1 : 0
   name                 = "${local.prefix}-redis"
   engine               = "redis"
   version              = "7"
@@ -37,18 +40,13 @@ resource "digitalocean_database_cluster" "redis" {
   private_network_uuid = data.digitalocean_vpc.shared[0].id
 }
 
-
-
 data "digitalocean_project" "shared" {
-  count = local.is_app
+  count = local.is_app ? 1 : 0
   name  = terraform.workspace
 }
 
 resource "digitalocean_project_resources" "app" {
-  count   = local.is_app
-  project = data.digitalocean_project.shared[0].id
-  resources = [
-    digitalocean_database_cluster.redis[0].urn
-  ]
+  count     = local.is_app && length(local.app_groups) > 0 ? 1 : 0
+  project   = data.digitalocean_project.shared[0].id
+  resources = local.app_groups
 }
-*/
