@@ -1,6 +1,7 @@
 locals {
   is_app = var.type == "app"
   is_redis = var.type == "app" && var.redis
+  is_external = var.type == "app" && var.external
 
   all_redis_settings = {
     dev = {
@@ -18,6 +19,8 @@ locals {
   }
 
   current_redis_settings = local.all_redis_settings[terraform.workspace]
+
+  app_domain_name = trimprefix(element([for i in data.digitalocean_project.shared[0].resources : i if startswith(i, "do:domain:")], 0), "do:domain:")
 }
 
 data "digitalocean_vpc" "shared" {
@@ -50,4 +53,44 @@ resource "digitalocean_database_firewall" "redis" {
     type  = "ip_addr"
     value = data.digitalocean_vpc.shared[0].ip_range
   }
+}
+
+data "digitalocean_domain" "external" {
+  count = local.is_external ? 1 : 0
+  name  = local.app_domain_name
+}
+
+resource "digitalocean_record" "external" {
+  count  = local.is_external ? 1 : 0
+  domain = data.digitalocean_domain.external[0].id
+  type   = "A"
+  name   = "@"
+  value  = digitalocean_loadbalancer.external[0].ip
+}
+
+resource "digitalocean_certificate" "external" {
+  count  = local.is_external ? 1 : 0
+
+  name    = "${local.prefix}-cert"
+  type    = "lets_encrypt"
+  domains = [local.app_domain_name]
+}
+
+resource "digitalocean_loadbalancer" "external" {
+  count  = local.is_external ? 1 : 0
+  name   = "${local.prefix}-lb"
+  region = "nyc3"
+
+  forwarding_rule {
+    entry_port     = 443
+    entry_protocol = "https"
+
+    target_port     = 80
+    target_protocol = "http"
+
+    certificate_name = digitalocean_certificate.external[0].name
+  }
+
+  project_id = data.digitalocean_project.shared[0].id
+  vpc_uuid   = data.digitalocean_vpc.shared[0].id
 }

@@ -25,3 +25,9 @@ variable "redis" {
   description = "Do we need a Redis Cluster created or not?"
   default     = false
 }
+
+variable "external" {
+  type        = bool
+  description = "Do we need to create a load balancer, https cert and a DNS record?"
+  default     = false
+}

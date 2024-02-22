@@ -1,0 +1,30 @@
+name: "Frontend Infra PR"
+
+on:
+  pull_request:
+    paths:
+      - 'src/frontend/app.auto.tfvars'
+    branches:
+      - main
+
+jobs:
+  dev-workflow:
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: frontend
+      env: dev
+  stage-workflow:
+    needs: [dev-workflow]
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: frontend
+      env: stage
+  prod-workflow:
+    needs: [stage-workflow]
+    uses: ./.github/workflows/_infra-pr.yml
+    secrets: inherit
+    with:
+      project: frontend
+      env: prod
