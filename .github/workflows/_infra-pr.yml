@@ -5,21 +5,31 @@ on:
         required: true
         type: string
 
+env:
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
 jobs:
-  terraform-dev-plan:
+  terraform-pr-plan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
-      - name: Dev Plan
-        id: plan
+      - name: Prepare
         working-directory: ./src/${{ inputs.project }}
         run: |
           cp -a ../../infrastructure/. ./
+      - name: Prepare
+        working-directory: ./src/${{ inputs.project }}
+        run: |
           terraform init
           terraform workspace select -or-create dev
+      - name: Dev Plan
+        working-directory: ./src/${{ inputs.project }}
+        run: |
           terraform plan -no-color
         continue-on-error: true
       - name: Push PR Comment
