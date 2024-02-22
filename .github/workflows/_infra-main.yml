@@ -1,0 +1,70 @@
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+      env:
+        required: true
+        type: string
+  
+env:
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+jobs:
+  tf-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3
+      - name: Prepare
+        working-directory: ./src/${{ inputs.project }}
+        run: |
+          cp -a ../../infrastructure/. ./
+      - name: Prepare
+        working-directory: ./src/${{ inputs.project }}
+        run: |
+          terraform init
+          terraform workspace select -or-create ${{ inputs.env }}
+      - name: Dev Plan
+        id: plan
+        working-directory: ./src/${{ inputs.project }}
+        run: |
+          terraform plan -no-color -out ${{ inputs.env }}-plan.tfplan
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.env}}-tfplan
+          path: |
+            src/${{ inputs.project }}/${{ inputs.env }}-plan.tfplan
+  tf-apply:
+    needs: [tf-plan]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3
+      - name: Prepare
+        working-directory: ./src/${{ inputs.project }}
+        run: |
+          cp -a ../../infrastructure/. ./
+      - name: Prepare
+        working-directory: ./src/${{ inputs.project }}
+        run: |
+          terraform init
+          terraform workspace select -or-create ${{ inputs.env }}
+      - name: Download Plan
+        working-directory: ./src/${{ inputs.project }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.env}}-tfplan
+      - name: Terraform Apply
+        working-directory: ./src/${{ inputs.project }}
+        run: |
+          terraform apply ${{ inputs.env }}-plan.tfplan

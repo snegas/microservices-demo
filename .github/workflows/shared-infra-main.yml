@@ -1,27 +1,30 @@
-name: "Shared Infra PR"
+name: "Shared Infra Main"
 
 on:
-  pull_request:
+  push:
     paths:
       - 'src/shared-infra/**'
     branches:
       - main
+  workflow_call:
 
 jobs:
   dev-workflow:
-    uses: ./.github/workflows/_infra-pr.yml
+    uses: ./.github/workflows/_infra-main.yml
     secrets: inherit
     with:
       project: shared-infra
       env: dev
   stage-workflow:
-    uses: ./.github/workflows/_infra-pr.yml
+    needs: [dev-workflow]
+    uses: ./.github/workflows/_infra-main.yml
     secrets: inherit
     with:
       project: shared-infra
       env: stage
   prod-workflow:
-    uses: ./.github/workflows/_infra-pr.yml
+    needs: [stage-workflow]
+    uses: ./.github/workflows/_infra-main.yml
     secrets: inherit
     with:
       project: shared-infra
