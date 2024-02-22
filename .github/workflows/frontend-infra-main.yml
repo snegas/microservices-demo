@@ -1,0 +1,31 @@
+name: "Frontend Infra Main"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/frontend/app.auto.tfvars*'
+    branches:
+      - main
+
+jobs:
+  dev-workflow:
+    uses: ./.github/workflows/_infra-main.yml
+    secrets: inherit
+    with:
+      project: frontend
+      env: dev
+  stage-workflow:
+    needs: [dev-workflow]
+    uses: ./.github/workflows/_infra-main.yml
+    secrets: inherit
+    with:
+      project: frontend
+      env: stage
+  prod-workflow:
+    needs: [stage-workflow]
+    uses: ./.github/workflows/_infra-main.yml
+    secrets: inherit
+    with:
+      project: frontend
+      env: prod
