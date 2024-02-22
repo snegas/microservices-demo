@@ -28,7 +28,7 @@ jobs:
       - name: Prepare
         working-directory: ./src/${{ inputs.project }}
         run: |
-          terraform init -backend-config="key=${{ inputs.project }}.tfvars"
+          terraform init -backend-config="key=${{ inputs.project }}.tfstate"
           terraform workspace select -or-create ${{ inputs.env }}
       - name: Terraform Plan
         id: plan
