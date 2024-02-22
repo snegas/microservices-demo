@@ -20,7 +20,7 @@ locals {
   current_redis_settings = local.all_redis_settings[terraform.workspace]
 
   app_groups = compact(concat(
-    is_redis ? [ digitalocean_database_cluster.redis[0].id ] : []
+    local.is_redis ? [ digitalocean_database_cluster.redis[0].id ] : []
   ))
 }
 
