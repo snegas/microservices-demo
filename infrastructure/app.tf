@@ -18,15 +18,16 @@ locals {
   }
 
   current_redis_settings = local.all_redis_settings[terraform.workspace]
-
-  app_groups = compact(concat(
-    local.is_redis ? [ digitalocean_database_cluster.redis[0].id ] : []
-  ))
 }
 
 data "digitalocean_vpc" "shared" {
   count = local.is_app ? 1 : 0
   name  = "${terraform.workspace}-shared-infra-vpc"
+}
+
+data "digitalocean_project" "shared" {
+  count = local.is_app ? 1 : 0
+  name  = "${terraform.workspace}-shared-infra"
 }
 
 resource "digitalocean_database_cluster" "redis" {
@@ -38,15 +39,5 @@ resource "digitalocean_database_cluster" "redis" {
   region               = "nyc1"
   node_count           = local.current_redis_settings["node_count"]
   private_network_uuid = data.digitalocean_vpc.shared[0].id
-}
-
-data "digitalocean_project" "shared" {
-  count = local.is_app ? 1 : 0
-  name  = "${terraform.workspace}-shared-infra"
-}
-
-resource "digitalocean_project_resources" "app" {
-  count     = local.is_app && length(local.app_groups) > 0 ? 1 : 0
-  project   = data.digitalocean_project.shared[0].id
-  resources = local.app_groups
+  project_id           = data.digitalocean_project.shared[0].id
 }
