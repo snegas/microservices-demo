@@ -19,3 +19,9 @@ variable "base_domain" {
   description = "DNS Hosted Zone you own and want to allocate as a base for the environments"
   default     = ""
 }
+
+variable "redis" {
+  type        = bool
+  description = "Do we need a Redis Cluster created or not?"
+  default     = false
+}
