@@ -28,7 +28,7 @@ resource "digitalocean_vpc" "default" {
 }
 
 resource "digitalocean_domain" "default" {
-  count = var.type == "shared" && var.base_domain != 0 > 0 ? 1 : 0
+  count = local.is_shared
   name  = local.base_domain
 }
 
