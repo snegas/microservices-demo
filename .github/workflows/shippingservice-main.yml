@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'src/shippingservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 jobs:

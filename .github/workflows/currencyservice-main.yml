@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'src/currencyservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 jobs:

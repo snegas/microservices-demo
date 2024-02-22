@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'src/checkoutservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 jobs:

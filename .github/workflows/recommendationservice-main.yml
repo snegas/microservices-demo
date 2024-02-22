@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'src/recommendationservice/**'
-      - '.github/workflows/**'
     branches:
       - main
 jobs:
