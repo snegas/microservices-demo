@@ -8,7 +8,7 @@ locals {
       node_count = 1
     }
     stage = {
-      size       = "db-s-1vcpu-1gb"
+      size       = "db-s-1vcpu-2gb"
       node_count = 2
     }
     prod = {
