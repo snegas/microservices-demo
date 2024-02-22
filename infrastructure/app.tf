@@ -62,7 +62,7 @@ data "digitalocean_domain" "external" {
 
 resource "digitalocean_record" "external" {
   count  = local.is_external ? 1 : 0
-  domain = digitalocean_domain.external[0].id
+  domain = data.digitalocean_domain.external[0].id
   type   = "A"
   name   = "@"
   value  = digitalocean_loadbalancer.external[0].ip
