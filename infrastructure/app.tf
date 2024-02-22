@@ -36,7 +36,7 @@ resource "digitalocean_database_cluster" "redis" {
   engine               = "redis"
   version              = "7"
   size                 = local.current_redis_settings["size"]
-  region               = "nyc1"
+  region               = "nyc3"
   node_count           = local.current_redis_settings["node_count"]
   private_network_uuid = data.digitalocean_vpc.shared[0].id
   project_id           = data.digitalocean_project.shared[0].id
