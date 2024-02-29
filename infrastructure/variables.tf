@@ -37,3 +37,9 @@ variable "region" {
   description = "Digital Ocean region"
   default     = "nyc3"
 }
+
+variable "repository" {
+  type = string
+  description = "Current Github Repository"
+  default = "snegas/microservices-demo"
+}

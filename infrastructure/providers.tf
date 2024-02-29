@@ -4,6 +4,10 @@ terraform {
       source  = "digitalocean/digitalocean"
       version = "~> 2.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "~> 5.0"
+    }
   }
 
   backend "s3" {
@@ -23,3 +27,4 @@ terraform {
 }
 
 provider "digitalocean" {}
+provider "github" {}
