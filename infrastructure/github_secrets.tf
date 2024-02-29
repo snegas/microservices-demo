@@ -11,5 +11,5 @@ resource "github_actions_environment_secret" "example_secret" {
     repository        = var.repository
     environment       = terraform.workspace
     secret_name       = "KUBECONFIG"
-    encrypted_value   = local.kubeconfig
+    encrypted_value   = base64decode(local.kubeconfig)
 }
