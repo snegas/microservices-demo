@@ -1,15 +1,12 @@
-locals {
-  kubeconfig = !local.is_app ? templatefile("kubeconfig.tftpl", {
-    ca_certificate = base64decode(digitalocean_kubernetes_cluster.environment[0].kube_config[0].cluster_ca_certificate)
-    host           = digitalocean_kubernetes_cluster.environment[0].endpoint
-    token          = digitalocean_kubernetes_cluster.environment[0].kube_config[0].token
-  }) : null
+data "github_repository" "environment" {
+  count     = local.is_shared
+  full_name = var.repository
 }
 
-resource "github_actions_environment_secret" "example_secret" {
-    count             = local.is_shared
-    repository        = var.repository
-    environment       = terraform.workspace
-    secret_name       = "KUBECONFIG"
-    encrypted_value   = base64encode(local.kubeconfig)
+resource "github_actions_environment_secret" "environment" {
+  count             = local.is_shared
+  repository        = data.github_repository.environment[0].name
+  environment       = terraform.workspace
+  secret_name       = "KUBECONFIG"
+  encrypted_value   = base64encode(digitalocean_kubernetes_cluster.environment[0].kube_config[0].raw_config)
 }
