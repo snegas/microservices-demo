@@ -39,7 +39,7 @@ resource "digitalocean_database_cluster" "redis" {
   engine               = "redis"
   version              = "7"
   size                 = local.current_redis_settings["size"]
-  region               = "nyc3"
+  region               = var.region
   node_count           = local.current_redis_settings["node_count"]
   private_network_uuid = data.digitalocean_vpc.shared[0].id
   project_id           = data.digitalocean_project.shared[0].id
@@ -79,7 +79,7 @@ resource "digitalocean_certificate" "external" {
 resource "digitalocean_loadbalancer" "external" {
   count  = local.is_external ? 1 : 0
   name   = "${local.prefix}-lb"
-  region = "nyc3"
+  region = var.region
 
   forwarding_rule {
     entry_port     = 443
