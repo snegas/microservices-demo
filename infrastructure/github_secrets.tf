@@ -1,8 +1,8 @@
 locals {
   kubeconfig = !local.is_app ? templatefile("kubeconfig.tftpl", {
-    ca_certificate = base64decode(data.digitalocean_kubernetes_cluster.environment[0].kube_config[0].cluster_ca_certificate)
-    host           = data.digitalocean_kubernetes_cluster.environment[0].endpoint
-    token          = data.digitalocean_kubernetes_cluster.environment[0].token
+    ca_certificate = base64decode(digitalocean_kubernetes_cluster.environment[0].kube_config[0].cluster_ca_certificate)
+    host           = digitalocean_kubernetes_cluster.environment[0].endpoint
+    token          = digitalocean_kubernetes_cluster.environment[0].token
   }) : null
 }
 
