@@ -27,4 +27,7 @@ terraform {
 }
 
 provider "digitalocean" {}
-provider "github" {}
+
+provider "github" {
+  owner = "snegas"
+}
