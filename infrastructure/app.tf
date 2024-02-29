@@ -1,6 +1,6 @@
 locals {
-  is_app = var.type == "app"
-  is_redis = var.type == "app" && var.redis
+  is_app      = var.type == "app"
+  is_redis    = var.type == "app" && var.redis
   is_external = var.type == "app" && var.external
 
   all_redis_settings = {
@@ -69,7 +69,7 @@ resource "digitalocean_record" "external" {
 }
 
 resource "digitalocean_certificate" "external" {
-  count  = local.is_external ? 1 : 0
+  count = local.is_external ? 1 : 0
 
   name    = "${local.prefix}-cert"
   type    = "lets_encrypt"

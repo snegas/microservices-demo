@@ -10,7 +10,7 @@ locals {
 
   prefix = "${terraform.workspace}-${var.type}-${var.prefix}"
 
-  is_production = local.env == "prod" ? true : false
+  is_not_dev = local.env != "dev"
 
   base_domain = terraform.workspace == "prod" ? var.base_domain : "${terraform.workspace}.${var.base_domain}"
 
@@ -66,16 +66,17 @@ data "digitalocean_kubernetes_versions" "environment" {
 }
 
 resource "digitalocean_kubernetes_cluster" "environment" {
-  count   = local.is_shared
-  name    = "${local.prefix}-cluster"
-  region  = var.region
+  count        = local.is_shared
+  name         = "${local.prefix}-cluster"
+  region       = var.region
   auto_upgrade = true
-  version = data.digitalocean_kubernetes_versions.environment[0].latest_version
-  vpc_uuid = digitalocean_vpc.default[0].id
+  version      = data.digitalocean_kubernetes_versions.environment[0].latest_version
+  vpc_uuid     = digitalocean_vpc.default[0].id
+  ha           = local.is_not_dev
 
   maintenance_policy {
     start_time = "02:00"
-    day = "sunday"
+    day        = "sunday"
   }
 
   node_pool {

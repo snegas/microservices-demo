@@ -33,7 +33,7 @@ variable "external" {
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "Digital Ocean region"
-  default = "nyc3"
+  default     = "nyc3"
 }
